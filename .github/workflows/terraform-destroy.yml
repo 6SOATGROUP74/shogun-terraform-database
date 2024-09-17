@@ -20,7 +20,7 @@ jobs:
 
       - name: Terraform Init
         working-directory: ./src
-        run: terraform init -backend-config="bucket=imai-labs-teste" -backend-config="imai-labs-teste-superior"
+        run: terraform init
 
       - name: Terraform destroy
         working-directory: ./src
