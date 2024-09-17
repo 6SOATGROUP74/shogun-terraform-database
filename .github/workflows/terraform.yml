@@ -35,8 +35,8 @@ jobs:
 
       - name: Commit .terraform.lock.hcl
         run: |
-          git config --local user.name "im4i"
-          git config --local user.email "rodrigoimai@hotmail.com"
+          git config --local user.name "6SOATGROUP74"
+          git config --local user.email "6soatgrupo74@gmail.com"
           git add .terraform.lock.hcl
           git commit -m "Update .terraform.lock.hcl"
         continue-on-error: true  # Caso o arquivo já exista, ignorar o erro de commit sem mudanças
