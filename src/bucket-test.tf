@@ -10,10 +10,10 @@ terraform {
       version = "5.67.0"
     }
   }
-}
 
-backend "s3" {
+  backend "s3" {
 
+  }
 }
 
 # Criação do Bucket S3
