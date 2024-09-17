@@ -14,7 +14,7 @@ terraform {
 
 # Criação do Bucket S3
 resource "aws_s3_bucket" "imai-labs-teste-superior" {
-  bucket = "imai-labs-teste"  # O nome do bucket deve ser único em toda a AWS
+  bucket = "imai-labs-teste"  # O nome do bucket deve ser único em toda a AWS.
 
   tags = {
     Name        = "MeuBucketDeTeste"
