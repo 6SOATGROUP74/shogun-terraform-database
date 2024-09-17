@@ -12,7 +12,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Configurar as credenciais da AWS
-        uses: aws-actions/configure-aws-credentials@v1
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: sa-east-1
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
@@ -22,6 +22,23 @@ jobs:
         working-directory: ./src
         run: terraform init
 
+      - name: Terraform plan
+        working-directory: ./src
+        run: terraform plan
+
       - name: Terraform destroy
         working-directory: ./src
         run: terraform destroy --auto-approve
+
+      - name: Commit .terraform.lock.hcl
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git add .terraform.lock.hcl
+          git commit -m "Update .terraform.lock.hcl"
+          continue-on-error: true  # Caso o arquivo já exista, ignorar o erro de commit sem mudanças
+          
+          - name: Push changes
+            uses: ad-m/github-push-action@v0.6.0
+            with:
+              github_token: ${{ secrets.GITHUB_TOKEN }}
