@@ -19,17 +19,17 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-      - name: Checkout
+      - name: "Checkout"
         uses: actions/checkout@v4
 
-      - name: Terraform init
+      - name: "Terraform init"
         working-directory: ./src
         run: terraform init
 
-      - name: Terraform plan
+      - name: "Terraform plan"
         working-directory: ./src
         run: terraform plan -var "db_username=${{ secrets.DB_USERNAME }}" -var "db_password=${{ secrets.DB_PASSWORD }}"
 
-      - name: Terraform Apply
+      - name: "Terraform Apply"
         working-directory: ./src
         run: terraform apply --auto-approve -var "db_username=${{ secrets.DB_USERNAME }}" -var "db_password=${{ secrets.DB_PASSWORD }}"
