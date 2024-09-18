@@ -8,10 +8,10 @@ jobs:
     name: "Terraform destroy"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: "Checkout"
         uses: actions/checkout@v3
 
-      - name: Configurar as credenciais da AWS
+      - name: "Configurar as credenciais da AWS"
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-region: us-east-1
@@ -19,14 +19,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS }}
           aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
 
-      - name: Terraform Init
+      - name: "Terraform Init"
         working-directory: ./src
         run: terraform init
 
-      - name: Terraform plan
-        working-directory: ./src
-        run: terraform plan -var "db_username=${{ secrets.DB_USERNAME }}" -var "db_password=${{ secrets.DB_PASSWORD }}"
-
-      - name: Terraform destroy
+      - name: "Terraform destroy"
         working-directory: ./src
         run: terraform destroy --auto-approve -var "db_username=${{ secrets.DB_USERNAME }}" -var "db_password=${{ secrets.DB_PASSWORD }}"
