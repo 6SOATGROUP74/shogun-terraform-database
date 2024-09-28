@@ -49,7 +49,7 @@ resource "aws_security_group_rule" "allow_mysql_ingress" {
 }
 
 resource "aws_security_group" "rds_sg" {
-  name        = "rds-security-group"
+  name        = "shogun-rds-security-group"
   description = "Security group for RDS MySQL"
   vpc_id      = data.aws_vpc.this.id
 }
