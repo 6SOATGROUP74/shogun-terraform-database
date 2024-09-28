@@ -13,6 +13,12 @@ terraform {
 }
 
 resource "aws_db_instance" "shogun_data_base" {
+
+
+  depends_on = [
+    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
+  ]
+
   allocated_storage      = 20
   db_name                = "db_soat"
   identifier             = "shogun-database"
@@ -32,6 +38,7 @@ resource "aws_secretsmanager_secret" "ssm_rds" {
 }
 
 resource "aws_secretsmanager_secret_version" "ssm_rds_version" {
+
   secret_id = aws_secretsmanager_secret.ssm_rds.id
   secret_string = jsonencode({
     username = "tech_user"
@@ -40,6 +47,11 @@ resource "aws_secretsmanager_secret_version" "ssm_rds_version" {
 }
 
 resource "aws_security_group_rule" "allow_mysql_ingress" {
+
+  depends_on = [
+    aws_security_group.rds_sg
+  ]
+
   type              = "ingress"
   from_port         = 3306
   to_port           = 3306
