@@ -1,5 +1,10 @@
 name: "Terraform Validadte and Plan"
 
+permissions:
+  contents: write
+  pull-requests: write
+
+
 on:
   push:
     branches:
