@@ -26,10 +26,10 @@ jobs:
         working-directory: ./src
         run: terraform init
 
-      - name: "Terraform plan"
-        working-directory: ./src
-        run: terraform plan -var "db_username=${{ secrets.DB_USERNAME }}" -var "db_password=${{ secrets.DB_PASSWORD }}"
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan -out=tfplan
 
-      - name: "Terraform Apply"
-        working-directory: ./src
-        run: terraform apply --auto-approve -var "db_username=${{ secrets.DB_USERNAME }}" -var "db_password=${{ secrets.DB_PASSWORD }}"
+      - name: Terraform Apply
+        if: success()
+        run: terraform apply -auto-approve tfplan
