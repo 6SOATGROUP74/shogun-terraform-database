@@ -13,6 +13,7 @@ jobs:
   terraform:
     name: "Terraform Apply"
     runs-on: "ubuntu-latest"
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'feature/')
     steps:
       - name: "Configure AWS Credentials"
         uses: aws-actions/configure-aws-credentials@v4
