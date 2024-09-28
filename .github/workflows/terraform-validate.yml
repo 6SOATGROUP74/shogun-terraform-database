@@ -1,4 +1,4 @@
-name: "Terraform Init and Plan"
+name: "Terraform Validadte and Plan"
 
 on:
   push:
@@ -25,7 +25,7 @@ jobs:
         run: terraform init
 
       - name: "Terraform validate"
-        run: terraform validadte
+        run: terraform validate
 
       - name: Terraform Plan
         id: plan
