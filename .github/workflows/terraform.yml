@@ -5,9 +5,7 @@ on:
     types:
       - closed
     branches:
-      - master
-    head_ref:
-      - feature/** 
+      - 'feature***'
 
 jobs:
   terraform:
