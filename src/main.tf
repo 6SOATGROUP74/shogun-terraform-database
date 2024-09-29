@@ -33,7 +33,6 @@ resource "aws_db_instance" "shogun_data_base" {
 }
 
 resource "aws_secretsmanager_secret" "ssm_rds" {
-  name        = "rds-secrets-shogun"
   description = "RDS MySQL"
 }
 
