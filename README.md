@@ -1,6 +1,7 @@
 # shogun-terraform-database
 Repositório que cria a estrutura do banco de dados da aplicação shogun lanches.
 
+
 # Especificações
 - O banco de dados utilizado para o projeto foi o modelo relacional, sendo o **MySQL** na versão **8.0.37**.
 - O banco de dados é provisionado por meio do Terraform, utilizando o serviço RDS da AWS.
