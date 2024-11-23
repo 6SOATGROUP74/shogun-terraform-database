@@ -12,11 +12,15 @@ terraform {
   }
 }
 
+resource "aws_s3_bucket" "this" {
+  bucket = "bucket-terraform-shogun-backend"
+}
+
 resource "aws_db_instance" "shogun_data_base" {
 
 
   depends_on = [
-    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
+    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress,aws_s3_bucket.this
   ]
 
   allocated_storage      = 20
@@ -36,7 +40,7 @@ resource "aws_db_instance" "produto_data_base" {
 
 
   depends_on = [
-    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
+    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress,aws_s3_bucket.this
   ]
 
   allocated_storage      = 20
@@ -53,10 +57,17 @@ resource "aws_db_instance" "produto_data_base" {
 }
 
 resource "aws_secretsmanager_secret" "ssm_rds" {
+  depends_on = [
+    aws_s3_bucket.this
+  ]
   description = "RDS MySQL"
 }
 
 resource "aws_secretsmanager_secret_version" "ssm_rds_version" {
+
+  depends_on = [
+    aws_s3_bucket.this
+  ]
 
   secret_id = aws_secretsmanager_secret.ssm_rds.id
   secret_string = jsonencode({
@@ -68,7 +79,7 @@ resource "aws_secretsmanager_secret_version" "ssm_rds_version" {
 resource "aws_security_group_rule" "allow_mysql_ingress" {
 
   depends_on = [
-    aws_security_group.rds_sg
+    aws_security_group.rds_sg, aws_s3_bucket.this
   ]
 
   type              = "ingress"
@@ -80,6 +91,10 @@ resource "aws_security_group_rule" "allow_mysql_ingress" {
 }
 
 resource "aws_security_group" "rds_sg" {
+
+  depends_on = [
+    aws_s3_bucket.this
+  ]
   name        = "shogun-rds-security-group"
   description = "Security group for RDS MySQL"
   vpc_id      = data.aws_vpc.this.id
