@@ -58,10 +58,6 @@ resource "aws_secretsmanager_secret" "ssm_rds" {
 
 resource "aws_secretsmanager_secret_version" "ssm_rds_version" {
 
-  depends_on = [
-    aws_s3_bucket.this
-  ]
-
   secret_id = aws_secretsmanager_secret.ssm_rds.id
   secret_string = jsonencode({
     username = "tech_user"
