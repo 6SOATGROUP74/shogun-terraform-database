@@ -88,3 +88,30 @@ resource "aws_security_group" "rds_sg" {
 data "aws_vpc" "this" {
   default = true
 }
+
+resource "aws_dynamodb_table" "clientes" {
+  name           = "clientes"
+  billing_mode   = "PAY_PER_REQUEST" 
+  hash_key       = "id_cliente"            
+
+  attribute {
+    name = "id_cliente"
+    type = "S" 
+  }
+
+  attribute {
+    name = "cpf"
+    type = "S" 
+  }
+
+  global_secondary_index {
+    name            = "cpf-index"
+    hash_key        = "cpf"       
+    projection_type = "ALL"        
+  }
+
+  tags = {
+    Environment = "dev"
+    Team        = "backend"
+  }
+}
