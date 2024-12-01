@@ -12,26 +12,6 @@ terraform {
   }
 }
 
-resource "aws_db_instance" "shogun_data_base" {
-
-
-  depends_on = [
-    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
-  ]
-
-  allocated_storage      = 20
-  db_name                = "db_soat"
-  identifier             = "shogun-database"
-  engine                 = "mysql"
-  engine_version         = "8.0.37"
-  instance_class         = "db.t3.micro"
-  username               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["username"]
-  password               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["password"]
-  parameter_group_name   = "default.mysql8.0"
-  skip_final_snapshot    = true
-  vpc_security_group_ids = [aws_security_group.rds_sg.id]
-}
-
 resource "aws_db_instance" "produto_data_base" {
 
 
@@ -51,6 +31,67 @@ resource "aws_db_instance" "produto_data_base" {
   skip_final_snapshot    = true
   vpc_security_group_ids = [aws_security_group.rds_sg.id]
 }
+
+resource "aws_db_instance" "db_soat_pagamento" {
+
+
+  depends_on = [
+    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
+  ]
+
+  allocated_storage      = 20
+  db_name                = "db_soat_pagamento"
+  identifier             = "shogun-pagamento-database"
+  engine                 = "mysql"
+  engine_version         = "8.0.37"
+  instance_class         = "db.t3.micro"
+  username               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["username"]
+  password               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["password"]
+  parameter_group_name   = "default.mysql8.0"
+  skip_final_snapshot    = true
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+}
+
+resource "aws_db_instance" "db_soat_producao" {
+
+
+  depends_on = [
+    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
+  ]
+
+  allocated_storage      = 20
+  db_name                = "db_soat_producao"
+  identifier             = "shogun-producao-database"
+  engine                 = "mysql"
+  engine_version         = "8.0.37"
+  instance_class         = "db.t3.micro"
+  username               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["username"]
+  password               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["password"]
+  parameter_group_name   = "default.mysql8.0"
+  skip_final_snapshot    = true
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+}
+
+resource "aws_db_instance" "db_soat_pedido" {
+
+
+  depends_on = [
+    aws_secretsmanager_secret.ssm_rds,aws_security_group_rule.allow_mysql_ingress
+  ]
+
+  allocated_storage      = 20
+  db_name                = "db_soat_pedido"
+  identifier             = "shogun-pedido-database"
+  engine                 = "mysql"
+  engine_version         = "8.0.37"
+  instance_class         = "db.t3.micro"
+  username               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["username"]
+  password               = jsondecode(aws_secretsmanager_secret_version.ssm_rds_version.secret_string)["password"]
+  parameter_group_name   = "default.mysql8.0"
+  skip_final_snapshot    = true
+  vpc_security_group_ids = [aws_security_group.rds_sg.id]
+}
+
 
 resource "aws_secretsmanager_secret" "ssm_rds" {
   description = "RDS MySQL"
@@ -87,31 +128,4 @@ resource "aws_security_group" "rds_sg" {
 
 data "aws_vpc" "this" {
   default = true
-}
-
-resource "aws_dynamodb_table" "clientes" {
-  name           = "clientes"
-  billing_mode   = "PAY_PER_REQUEST" 
-  hash_key       = "id_cliente"            
-
-  attribute {
-    name = "id_cliente"
-    type = "S" 
-  }
-
-  attribute {
-    name = "cpf"
-    type = "S" 
-  }
-
-  global_secondary_index {
-    name            = "cpf-index"
-    hash_key        = "cpf"       
-    projection_type = "ALL"        
-  }
-
-  tags = {
-    Environment = "dev"
-    Team        = "backend"
-  }
 }
